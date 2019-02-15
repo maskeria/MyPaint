@@ -2,8 +2,8 @@ import pygame
 
 pygame.init()
 
-display_width = 500
-display_height = 500
+display_width = 800
+display_height = 800
 
 #  COLOURS 
 white = (255, 255, 255)
@@ -65,9 +65,13 @@ def freeDraw():
 			pygame.draw.rect(gameDisplay, black, (mouse[0]-25, mouse[1]-25, 50, 50))
 		
 		button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
-		
+		button("Erase All", 240, 10, 100, 30, blue, bright_blue, eraseAll)
 		pygame.display.update()
 		clock.tick(500)
+
+		
+def eraseAll():
+	gameDisplay.fill(black)
 
 def quit_paint():
 	pygame.quit()
