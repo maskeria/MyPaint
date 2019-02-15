@@ -42,38 +42,58 @@ def button(msg, x, y, w, h, ic, ac, action = None):
 	else:
 		pygame.draw.rect(gameDisplay, ic, (x, y, w, h))
 		
-	textSurf, textRect = text_objects(msg, smallText)
+	textSurf, textRect = textObjects(msg, smallText)
 	textRect.center = ( (x+(w/2)), (y+(h/2)) )
 	gameDisplay.blit(textSurf, textRect)
-	
-	
-loop = True 
-while loop:
-	
-	for event in pygame.event.get():
+
+def freeDraw():
+	#add more functionality to colour
+	loop = True
+	while loop:	
+		for event in pygame.event.get():
+			
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
+				
+		mouse = pygame.mouse.get_pos()
+		click = pygame.mouse.get_pressed()
 		
-		if event.type == pygame.QUIT:
-			pygame.quit()
-			quit()
-	mouse = pygame.mouse.get_pos()
-	click = pygame.mouse.get_pressed()
-	
-	pixAr = pygame.PixelArray(gameDisplay)
-	
-	
-	print(click + mouse)
-	if click[0] == 1:
-		pixAr[mouse[0]][mouse[1]] = green ## this works but the pixels are too small. better to make a rectangle instead
+		if click[0] == 1:
+			pygame.draw.rect(gameDisplay, red, (mouse[0], mouse[1], 3, 3))
+		elif click[2] == 1:
+			pygame.draw.rect(gameDisplay, black, (mouse[0]-25, mouse[1]-25, 50, 50))
 		
+		button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
+		
+		pygame.display.update()
+		clock.tick(500)
+
+def quit_paint():
+	pygame.quit()
+	quit()
 	
 	
-	pygame.display.update()
-	clock.tick(100)
+def game_loop():
+	
+	game = True
+	while game: 
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
+	
+		button("DRAW", 10, 10, 100, 30, green, bright_green, freeDraw)
+		button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
+	
+		
+		pygame.display.update()
+		clock.tick(10)
 	
 	
-	
-	
-	
+game_loop()
+pygame.quit()
+quit()
 	
 	
 	
