@@ -1,5 +1,5 @@
 import pygame
-
+import time
 pygame.init()
 
 display_width = 800
@@ -10,7 +10,7 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 red = (200, 0, 0)
 green = (0, 200, 0)
-blue = (0, 0, 200)
+blue = (0, 0, 100)
 bright_red = (255, 0, 0)
 bright_green = (0, 255, 0)
 bright_blue = (0, 0, 255)
@@ -45,6 +45,43 @@ def button(msg, x, y, w, h, ic, ac, action = None):
 	textSurf, textRect = textObjects(msg, smallText)
 	textRect.center = ( (x+(w/2)), (y+(h/2)) )
 	gameDisplay.blit(textSurf, textRect)
+	
+def drawLine():
+#pygame.draw.line(gameDisplay, colour, (x1, y1), (x2, y2), thickness)
+# start point when first clicked, end point with second click
+#get pos when keydown, get pos when keyUP make line from those two pos
+	line = True
+	one = True
+	clickOne = (0,0)
+	clickTwo = (0,0)
+	order = False
+	while line:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
+		
+		
+			
+			mouse = pygame.mouse.get_pos()
+		#click = pygame.mouse.get_pressed()
+		
+			if event.type == pygame.MOUSEBUTTONDOWN and one == True:
+				
+				clickOne = (mouse[0], mouse[1])
+				one = False
+				order = True
+					
+			if event.type == pygame.MOUSEBUTTONUP and order == True:
+				clickTwo = (mouse[0],  mouse[1])
+			
+			print(clickOne, clickTwo)
+			if clickOne != (0,0) and clickTwo != (0,0):	
+				pygame.draw.line(gameDisplay, white, clickOne, clickTwo, 5)	
+				pygame.display.update()
+				line = False
+		
+			clock.tick(500)	
 
 def freeDraw():
 	#add more functionality to colour
@@ -65,9 +102,14 @@ def freeDraw():
 			pygame.draw.rect(gameDisplay, black, (mouse[0]-25, mouse[1]-25, 50, 50))
 		
 		button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
-		button("Erase All", 240, 10, 100, 30, blue, bright_blue, eraseAll)
+		button("Erase All", 10, 10, 100, 30, blue, bright_blue, eraseAll)
+		button("line", 240, 10, 100, 30, blue, bright_blue, drawLine)
 		pygame.display.update()
 		clock.tick(500)
+		
+		
+	
+	
 
 		
 def eraseAll():
@@ -89,15 +131,19 @@ def game_loop():
 	
 		button("DRAW", 10, 10, 100, 30, green, bright_green, freeDraw)
 		button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
-	
+
 		
 		pygame.display.update()
 		clock.tick(10)
 	
 	
+
 game_loop()
 pygame.quit()
 quit()
+
+#make rotating dots and create patterns
+
 	
 	
 	
