@@ -50,36 +50,47 @@ def drawLine():
 #pygame.draw.line(gameDisplay, colour, (x1, y1), (x2, y2), thickness)
 # start point when first clicked, end point with second click
 #get pos when keydown, get pos when keyUP make line from those two pos
+
 	line = True
-	one = True
+	one = False
+	two = False
+	order = False
 	clickOne = (0,0)
 	clickTwo = (0,0)
-	order = False
+	
 	while line:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				quit()
-		
-		
 			
+			button("DRAW", 10, 10, 100, 30, green, bright_green, freeDraw)
+			button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
+			button("Erase All", 10, 700, 100, 30, blue, bright_blue, eraseAll)
+		
 			mouse = pygame.mouse.get_pos()
 		#click = pygame.mouse.get_pressed()
 		
-			if event.type == pygame.MOUSEBUTTONDOWN and one == True:
+			if event.type == pygame.MOUSEBUTTONDOWN and one == False:
 				
 				clickOne = (mouse[0], mouse[1])
-				one = False
+				one = True
 				order = True
 					
 			if event.type == pygame.MOUSEBUTTONUP and order == True:
 				clickTwo = (mouse[0],  mouse[1])
+				two = True
 			
 			print(clickOne, clickTwo)
-			if clickOne != (0,0) and clickTwo != (0,0):	
-				pygame.draw.line(gameDisplay, white, clickOne, clickTwo, 5)	
+			if one and two:	
+				pygame.draw.line(gameDisplay, white, clickOne, clickTwo, 5)
 				pygame.display.update()
-				line = False
+				one = False
+				two = False
+				order = False
+				#line = False
+			
+			
 		
 			clock.tick(500)	
 
@@ -87,6 +98,7 @@ def freeDraw():
 	#add more functionality to colour
 	loop = True
 	while loop:	
+		pygame.display.update()
 		for event in pygame.event.get():
 			
 			if event.type == pygame.QUIT:
@@ -102,15 +114,11 @@ def freeDraw():
 			pygame.draw.rect(gameDisplay, black, (mouse[0]-25, mouse[1]-25, 50, 50))
 		
 		button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
-		button("Erase All", 10, 10, 100, 30, blue, bright_blue, eraseAll)
+		button("Erase All", 10, 700, 100, 30, blue, bright_blue, eraseAll)
 		button("line", 240, 10, 100, 30, blue, bright_blue, drawLine)
 		pygame.display.update()
 		clock.tick(500)
 		
-		
-	
-	
-
 		
 def eraseAll():
 	gameDisplay.fill(black)
@@ -118,7 +126,6 @@ def eraseAll():
 def quit_paint():
 	pygame.quit()
 	quit()
-	
 	
 def game_loop():
 	
@@ -135,7 +142,6 @@ def game_loop():
 		
 		pygame.display.update()
 		clock.tick(10)
-	
 	
 
 game_loop()
