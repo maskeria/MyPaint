@@ -25,7 +25,6 @@ pygame.display.set_caption("Let's see if we can paint eh")
 clock = pygame.time.Clock()
 
 
-
 def textObjects(text, font):
 	textSurface = font.render(text, True, white)
 	return textSurface, textSurface.get_rect()
@@ -47,32 +46,55 @@ def button(msg, x, y, w, h, ic, ac, action = None):
 	textSurf, textRect = textObjects(msg, smallText)
 	textRect.center = ( (x+(w/2)), (y+(h/2)) )
 	gameDisplay.blit(textSurf, textRect)
-	
+		
 def drawLine():
-#pygame.draw.line(gameDisplay, colour, (x1, y1), (x2, y2), thickness)
-# start point when first clicked, end point with second click
-#get pos when keydown, get pos when keyUP make line from those two pos
 
-	line = True
+
 	one = False
 	two = False
 	order = False
 	clickOne = (0,0)
 	clickTwo = (0,0)
+	color = white
 	
-	while line:
+	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				quit()
+			
+			mouse = pygame.mouse.get_pos()
+			click = pygame.mouse.get_pressed()
+		
+			
+			pygame.draw.rect(gameDisplay, red, (10, 50, 20, 20))
+			if 10 < mouse[0] < 10+20 and 50 < mouse[1] < 50+20:
+				pygame.draw.rect(gameDisplay, bright_red, (10, 50, 20, 20))
+				if click[0] == 1:
+					color = red
+					
+			pygame.draw.rect(gameDisplay, blue, (10, 75, 20, 20))
+			if 10 < mouse[0] < 10+20 and 75 < mouse[1] < 75+20:
+				pygame.draw.rect(gameDisplay, bright_blue, (10, 75, 20, 20))
+				if click[0] == 1:
+					color = blue
+			
+			pygame.draw.rect(gameDisplay, green, (10, 100, 20, 20))
+			if 10 < mouse[0] < 10+20 and 100 < mouse[1] < 100+20:
+				pygame.draw.rect(gameDisplay, bright_green, (10, 100, 20, 20))
+				if click[0] == 1:
+					color = green
+					
+			pygame.draw.rect(gameDisplay, white, (10, 125, 20, 20))
+			if 10 < mouse[0] < 10+20 and 125 < mouse[1] < 125+20:
+				pygame.draw.rect(gameDisplay, (205,205,205), (10, 125, 20, 20))
+				if click[0] == 1:
+					color = white
 				
 			button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
 			button("Erase All", 10, 550, 100, 30, red, bright_red, eraseAll)
 			button("DRAW", 10, 10, 100, 30, green, bright_green, freeDraw)
 			
-			mouse = pygame.mouse.get_pos()
-			#click = pygame.mouse.get_pressed()
-		
 			if event.type == pygame.MOUSEBUTTONDOWN and one == False:
 				
 				clickOne = (mouse[0], mouse[1])
@@ -84,15 +106,11 @@ def drawLine():
 				two = True
 			
 			elif one and two:	
-				pygame.draw.line(gameDisplay, white, clickOne, clickTwo, 5)
+				pygame.draw.line(gameDisplay, color, clickOne, clickTwo, 3)
 				pygame.display.update()
 				one = False
 				two = False
-				order = False
-				#line = False
-			
-				
-			
+				order = False	
 				
 			pygame.display.update()
 			clock.tick(500)	
@@ -100,9 +118,11 @@ def drawLine():
 def freeDraw():
 	#add more functionality to colour
 	loop = True
-	r = 250
-	g = 250
-	b = 250
+	r = 0
+	g = 0 
+	b = 0
+	color = (r,g,b)
+	
 	while loop:	
 		
 		for event in pygame.event.get():
@@ -111,8 +131,36 @@ def freeDraw():
 				pygame.quit()
 				quit()
 				
+		
+			mouse = pygame.mouse.get_pos()
+			click = pygame.mouse.get_pressed()
+			
+			pygame.draw.rect(gameDisplay, red, (10, 50, 20, 20))
+			if 10 < mouse[0] < 10+20 and 50 < mouse[1] < 50+20:
+				pygame.draw.rect(gameDisplay, bright_red, (10, 50, 20, 20))
+				if click[0] == 1:
+					color = red
+					
+			pygame.draw.rect(gameDisplay, blue, (10, 75, 20, 20))
+			if 10 < mouse[0] < 10+20 and 75 < mouse[1] < 75+20:
+				pygame.draw.rect(gameDisplay, bright_blue, (10, 75, 20, 20))
+				if click[0] == 1:
+					color = blue
+			
+			pygame.draw.rect(gameDisplay, green, (10, 100, 20, 20))
+			if 10 < mouse[0] < 10+20 and 100 < mouse[1] < 100+20:
+				pygame.draw.rect(gameDisplay, bright_green, (10, 100, 20, 20))
+				if click[0] == 1:
+					color = green
+					
+			pygame.draw.rect(gameDisplay, white, (10, 125, 20, 20))
+			if 10 < mouse[0] < 10+20 and 125 < mouse[1] < 125+20:
+				pygame.draw.rect(gameDisplay, (205,205,205), (10, 125, 20, 20))
+				if click[0] == 1:
+					color = white
+					
 			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_LEFT:
+				if event.key == pygame.K_RIGHT:
 					if b < 250 and r == 250 and g == 250:
 						r = 0
 						g = 0
@@ -122,10 +170,7 @@ def freeDraw():
 						g += 50
 					elif r < 250:
 						r += 50
-
-				print(event)
-				
-				if event.key == pygame.K_RIGHT:
+				if event.key == pygame.K_LEFT:
 					if b > 0 and g >= 0 and r >= 0:
 						b -= 50
 					elif g > 0 and b >= 0:
@@ -134,14 +179,11 @@ def freeDraw():
 					elif r > 0:
 						b = 250
 						g = 250
-						r -= 50
-			
-					
-			color = (r, g, b)	
+						r -= 50	
+				color = (r,g,b)		
+				
 			print(color)
-			mouse = pygame.mouse.get_pos()
-			click = pygame.mouse.get_pressed()
-
+			
 			if click[0] == 1:
 				pygame.draw.rect(gameDisplay, color, (mouse[0], mouse[1], 3, 3))
 			elif click[2] == 1:
@@ -152,8 +194,7 @@ def freeDraw():
 			button("line", 240, 10, 100, 30, blue, bright_blue, drawLine)
 			pygame.display.update()
 			clock.tick(500)
-		
-		
+				
 def eraseAll():
 	gameDisplay.fill(black)
 
@@ -184,7 +225,6 @@ quit()
 
 #make rotating dots and create patterns
 
-	
 	
 	
 	
