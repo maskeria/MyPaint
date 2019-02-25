@@ -15,6 +15,8 @@ bright_red = (255, 0, 0)
 bright_green = (0, 255, 0)
 bright_blue = (0, 0, 255)
 
+
+
 # FONT SIZES
 largeText = pygame.font.Font("freesansbold.ttf", 100)
 medText = pygame.font.Font("freesansbold.ttf", 50)
@@ -24,13 +26,11 @@ gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption("Let's see if we can paint eh")
 clock = pygame.time.Clock()
 
-
 def textObjects(text, font):
 	textSurface = font.render(text, True, white)
 	return textSurface, textSurface.get_rect()
 	
-def button(msg, x, y, w, h, ic, ac, action = None):
-	
+def button(msg, x, y, w, h, ic, ac, action = None):	
 	mouse = pygame.mouse.get_pos()
 	click = pygame.mouse.get_pressed()
 	if x < mouse[0] < x+w and y < mouse[1] < y+h:
@@ -39,24 +39,50 @@ def button(msg, x, y, w, h, ic, ac, action = None):
 		if click[0] == 1 and action != None:
 			pygame.display.update()
 			action()
-	
 	else:
 		pygame.draw.rect(gameDisplay, ic, (x, y, w, h))
-		
+	
 	textSurf, textRect = textObjects(msg, smallText)
 	textRect.center = ( (x+(w/2)), (y+(h/2)) )
 	gameDisplay.blit(textSurf, textRect)
+	
+def chooseColor(mouse, click, color):
+	###### COLOR BUTTONS
+	print(red)
+	pygame.draw.rect(gameDisplay, red, (10, 50, 20, 20))
+	if 10 < mouse[0] < 10+20 and 50 < mouse[1] < 50+20:
+		pygame.draw.rect(gameDisplay, bright_red, (10, 50, 20, 20))
+		if click[0] == 1:
+			return red
+			
+	pygame.draw.rect(gameDisplay, blue, (10, 75, 20, 20))
+	if 10 < mouse[0] < 10+20 and 75 < mouse[1] < 75+20:
+		pygame.draw.rect(gameDisplay, bright_blue, (10, 75, 20, 20))
+		if click[0] == 1:
+			return blue
+	
+	pygame.draw.rect(gameDisplay, green, (10, 100, 20, 20))
+	if 10 < mouse[0] < 10+20 and 100 < mouse[1] < 100+20:
+		pygame.draw.rect(gameDisplay, bright_green, (10, 100, 20, 20))
+		if click[0] == 1:
+			return green
+			
+	pygame.draw.rect(gameDisplay, white, (10, 125, 20, 20))
+	if 10 < mouse[0] < 10+20 and 125 < mouse[1] < 125+20:
+		pygame.draw.rect(gameDisplay, (205,205,205), (10, 125, 20, 20))
+		if click[0] == 1:
+			return white
+			
+	return color		
 		
 def drawLine():
-
-
 	one = False
 	two = False
 	order = False
 	clickOne = (0,0)
 	clickTwo = (0,0)
-	color = white
 	
+	color = white
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -66,37 +92,15 @@ def drawLine():
 			mouse = pygame.mouse.get_pos()
 			click = pygame.mouse.get_pressed()
 		
-			
-			pygame.draw.rect(gameDisplay, red, (10, 50, 20, 20))
-			if 10 < mouse[0] < 10+20 and 50 < mouse[1] < 50+20:
-				pygame.draw.rect(gameDisplay, bright_red, (10, 50, 20, 20))
-				if click[0] == 1:
-					color = red
-					
-			pygame.draw.rect(gameDisplay, blue, (10, 75, 20, 20))
-			if 10 < mouse[0] < 10+20 and 75 < mouse[1] < 75+20:
-				pygame.draw.rect(gameDisplay, bright_blue, (10, 75, 20, 20))
-				if click[0] == 1:
-					color = blue
-			
-			pygame.draw.rect(gameDisplay, green, (10, 100, 20, 20))
-			if 10 < mouse[0] < 10+20 and 100 < mouse[1] < 100+20:
-				pygame.draw.rect(gameDisplay, bright_green, (10, 100, 20, 20))
-				if click[0] == 1:
-					color = green
-					
-			pygame.draw.rect(gameDisplay, white, (10, 125, 20, 20))
-			if 10 < mouse[0] < 10+20 and 125 < mouse[1] < 125+20:
-				pygame.draw.rect(gameDisplay, (205,205,205), (10, 125, 20, 20))
-				if click[0] == 1:
-					color = white
-				
+			###### COLOR BUTTONs
+			color = chooseColor(mouse, click, color)
+			######	
 			button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
 			button("Erase All", 10, 550, 100, 30, red, bright_red, eraseAll)
 			button("DRAW", 10, 10, 100, 30, green, bright_green, freeDraw)
 			
+			###### LINE DRAWING
 			if event.type == pygame.MOUSEBUTTONDOWN and one == False:
-				
 				clickOne = (mouse[0], mouse[1])
 				one = True
 				order = True
@@ -118,9 +122,9 @@ def drawLine():
 def freeDraw():
 	#add more functionality to colour
 	loop = True
-	r = 0
-	g = 0 
-	b = 0
+	r = 255
+	g = 255
+	b = 255
 	color = (r,g,b)
 	
 	while loop:	
@@ -135,30 +139,10 @@ def freeDraw():
 			mouse = pygame.mouse.get_pos()
 			click = pygame.mouse.get_pressed()
 			
-			pygame.draw.rect(gameDisplay, red, (10, 50, 20, 20))
-			if 10 < mouse[0] < 10+20 and 50 < mouse[1] < 50+20:
-				pygame.draw.rect(gameDisplay, bright_red, (10, 50, 20, 20))
-				if click[0] == 1:
-					color = red
-					
-			pygame.draw.rect(gameDisplay, blue, (10, 75, 20, 20))
-			if 10 < mouse[0] < 10+20 and 75 < mouse[1] < 75+20:
-				pygame.draw.rect(gameDisplay, bright_blue, (10, 75, 20, 20))
-				if click[0] == 1:
-					color = blue
-			
-			pygame.draw.rect(gameDisplay, green, (10, 100, 20, 20))
-			if 10 < mouse[0] < 10+20 and 100 < mouse[1] < 100+20:
-				pygame.draw.rect(gameDisplay, bright_green, (10, 100, 20, 20))
-				if click[0] == 1:
-					color = green
-					
-			pygame.draw.rect(gameDisplay, white, (10, 125, 20, 20))
-			if 10 < mouse[0] < 10+20 and 125 < mouse[1] < 125+20:
-				pygame.draw.rect(gameDisplay, (205,205,205), (10, 125, 20, 20))
-				if click[0] == 1:
-					color = white
-					
+			##### COLOR BUTTONS
+			color = chooseColor(mouse, click, color)
+			######
+			###### COLOR SLIDING USING ARROW KEYS
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_RIGHT:
 					if b < 250 and r == 250 and g == 250:
@@ -182,8 +166,8 @@ def freeDraw():
 						r -= 50	
 				color = (r,g,b)		
 				
-			print(color)
-			
+			#print(color)
+			#####DRAWING WITH MOUSE 
 			if click[0] == 1:
 				pygame.draw.rect(gameDisplay, color, (mouse[0], mouse[1], 3, 3))
 			elif click[2] == 1:
