@@ -45,10 +45,16 @@ def button(msg, x, y, w, h, ic, ac, action = None):
 	textSurf, textRect = textObjects(msg, smallText)
 	textRect.center = ( (x+(w/2)), (y+(h/2)) )
 	gameDisplay.blit(textSurf, textRect)
+
+#def spectrum():
+#loop to make the buttons and return the chosen color
+#choice = True
+#while choice:
+	
 	
 def chooseColor(mouse, click, color):
 	###### COLOR BUTTONS
-	print(red)
+	
 	pygame.draw.rect(gameDisplay, red, (10, 50, 20, 20))
 	if 10 < mouse[0] < 10+20 and 50 < mouse[1] < 50+20:
 		pygame.draw.rect(gameDisplay, bright_red, (10, 50, 20, 20))
@@ -81,8 +87,11 @@ def drawLine():
 	order = False
 	clickOne = (0,0)
 	clickTwo = (0,0)
+	r = 250
+	g = 250
+	b = 250
+	color = (r,g,b)
 	
-	color = white
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -94,6 +103,29 @@ def drawLine():
 		
 			###### COLOR BUTTONs
 			color = chooseColor(mouse, click, color)
+			######	
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_RIGHT:
+					if r < 250:
+						r += 50
+					elif r == 250 and g < 250:
+						r = 0;
+						g += 50
+					elif r == 250 and g == 250 and b < 250:
+						r = 0
+						g = 0
+						b += 50	
+				if event.key == pygame.K_LEFT:
+					if b > 0:
+						b -= 50
+					elif b == 0 and g > 0:
+						b = 250
+						g -= 50
+					elif b == 0 and g == 0 and r > 0:
+						b = 250
+						g = 250
+						r -= 50
+				color = (r,g,b)
 			######	
 			button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
 			button("Erase All", 10, 550, 100, 30, red, bright_red, eraseAll)
@@ -114,7 +146,9 @@ def drawLine():
 				pygame.display.update()
 				one = False
 				two = False
-				order = False	
+				order = False
+			if click[2] == 1:
+				pygame.draw.rect(gameDisplay, black, (mouse[0]-25, mouse[1]-25, 50, 50))
 				
 			pygame.display.update()
 			clock.tick(500)	
@@ -122,9 +156,9 @@ def drawLine():
 def freeDraw():
 	#add more functionality to colour
 	loop = True
-	r = 255
-	g = 255
-	b = 255
+	r = 250
+	g = 250
+	b = 250
 	color = (r,g,b)
 	
 	while loop:	
@@ -145,28 +179,28 @@ def freeDraw():
 			###### COLOR SLIDING USING ARROW KEYS
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_RIGHT:
-					if b < 250 and r == 250 and g == 250:
+					if r < 250:
+						r += 50
+					elif r == 250 and g < 250:
+						r = 0;
+						g += 50
+					elif r == 250 and g == 250 and b < 250:
 						r = 0
 						g = 0
-						b += 50
-					elif g < 250 and r == 250:
-						r = 0
-						g += 50
-					elif r < 250:
-						r += 50
+						b += 50	
 				if event.key == pygame.K_LEFT:
-					if b > 0 and g >= 0 and r >= 0:
+					if b > 0:
 						b -= 50
-					elif g > 0 and b >= 0:
+					elif b == 0 and g > 0:
 						b = 250
 						g -= 50
-					elif r > 0:
+					elif b == 0 and g == 0 and r > 0:
 						b = 250
 						g = 250
-						r -= 50	
+						r -= 50
 				color = (r,g,b)		
 				
-			#print(color)
+			print(color)
 			#####DRAWING WITH MOUSE 
 			if click[0] == 1:
 				pygame.draw.rect(gameDisplay, color, (mouse[0], mouse[1], 3, 3))
