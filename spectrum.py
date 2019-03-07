@@ -45,38 +45,38 @@ def spectrum():
 		else:
 			xpos = 0
 			ypos += w
-				
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			pygame.quit()
-			quit()
-		
-		choice = True
-		
-		
-		
-		i = 0
-		while choice:
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					pygame.quit()
-					quit()
-					
-			mouse = pygame.mouse.get_pos()
-			click = pygame.mouse.get_pressed()
-			#print(colors[i], colorPosx[i], colorPosy[i], i)
+	
+	
+	choice = True	
+	i = 0
+	while choice:		
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
 			
-			if colorPosx[i] < mouse[0] < colorPosx[i] + w and colorPosy[i] < mouse[1] < colorPosy[i] + w: 
-				
-				if click[0] == 1:
-					return colors[i]
-					
-					choice = False
+		mouse = pygame.mouse.get_pos()
+		click = pygame.mouse.get_pressed()
+		#print(colors[i], colorPosx[i], colorPosy[i], i)
+		
+		if colorPosx[i] < mouse[0] < colorPosx[i] + w and colorPosy[i] < mouse[1] < colorPosy[i] + w: 
 			
-			if i < len(colors)-1:
-				i += 1
-			else:
-				i = 0
+			if click[0] == 1:
+				return colors[i]
+				gameDisplay.fill(black)
+				choice = False
+		
+		if i < len(colors)-1:
+			i += 1
+		else:
+			i = 0
+		
+		
+		
+		
+		
+			
+					
 					
 print(spectrum())
 
