@@ -52,7 +52,18 @@ def button(msg, x, y, w, h, ic, ac, action = None):
 	textRect.center = ( (x+(w/2)), (y+(h/2)) )
 	gameDisplay.blit(textSurf, textRect)
 
+#def shapes():
+#will call all shape functions (line, circle, polygon) with buttons for each shape
 
+#def fill():
+#fills selected shape with desired color
+
+#def loadImage():
+#loads an image from the computer
+
+
+####### Make a sidebar to make it look better
+#######
 	
 def spectrum():
 	
@@ -77,17 +88,11 @@ def spectrum():
 	xpos = 100
 	ypos = 100
 	
-	#for x in range(0, len(red)):
-	#	for y in range(0, len(green)):
-	#		for z in range(0, len(blue)):
-	#			 colors.append((red[x],green[y],blue[z]))
 	for x in range(0, 541):
 		if x < 180:
 			colors.append((red[int(math.cos(x)*5)] ,(green[1-int(math.cos(x)*5)]),0))
-			 
 		if 180 < x < 360:
 			colors.append((0,(green[1-int(math.cos(x)*5)]),blue[int(math.cos(x)*5)]))
-		
 		if 360 < x < 540:
 			colors.append(((red[1-int(math.cos(x)*5)]),0,blue[int(math.cos(x)*5)]))	
 
@@ -134,8 +139,6 @@ def spectrum():
 def sliders(event):
 	
 	global r, g, b, thickness, color	
-	
-	
 
 	print(thickness)	
 	print(color)
@@ -237,17 +240,18 @@ def drawLine():
 				clickTwo = (mouse[0],  mouse[1])
 				two = True
 			
-			elif one and two:	
-				pygame.draw.line(gameDisplay, color, clickOne, clickTwo, 3)
-				pygame.display.update()
-				one = False
-				two = False
-				order = False
-			if click[2] == 1:
-				pygame.draw.rect(gameDisplay, black, (mouse[0]-25, mouse[1]-25, 50, 50))
-				
+		if one and two:	
+			pygame.draw.line(gameDisplay, color, clickOne, clickTwo, thickness)
 			pygame.display.update()
-			clock.tick(500)	
+			one = False
+			two = False
+			order = False
+		if click[2] == 1:
+			one = False
+			pygame.draw.rect(gameDisplay, black, (mouse[0]-25, mouse[1]-25, 50, 50))
+			
+		pygame.display.update()
+		clock.tick(500)	
 
 def freeDraw():
 	#add more functionality to colour
