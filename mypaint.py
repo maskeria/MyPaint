@@ -20,6 +20,7 @@ r = 250
 g = 250
 b = 250
 color = (r,g,b)
+thickness = 2
 
 
 # FONT SIZES
@@ -40,7 +41,6 @@ def button(msg, x, y, w, h, ic, ac, action = None):
 	click = pygame.mouse.get_pressed()
 	if x < mouse[0] < x+w and y < mouse[1] < y+h:
 		pygame.draw.rect(gameDisplay, ac, (x, y, w, h))
-		pygame.draw.rect(gameDisplay, ic, (x+5, y+5, w-10, h-10))
 		if click[0] == 1 and action != None:
 			pygame.display.update()
 			time.sleep(0.5)
@@ -99,7 +99,7 @@ def spectrum():
 		colorPosx.append(xpos)
 		colorPosy.append(ypos)
 		
-		if xpos < ((250/resolution)+1)**3 + 538:
+		if xpos < 560:
 			xpos += w
 		else:
 			xpos = 100
@@ -131,7 +131,44 @@ def spectrum():
 		else:
 			i = 0
 		
-				
+def sliders(event):
+	
+	global r, g, b, thickness, color	
+	
+	
+
+	print(thickness)	
+	print(color)
+	if event.type == pygame.KEYDOWN:
+		if event.key == pygame.K_UP:
+			if thickness < 25:
+				thickness += 2
+		if event.key == pygame.K_DOWN:
+			if thickness > 2:
+				thickness -= 2
+		if event.key == pygame.K_RIGHT:
+			if r < 250:
+				r += 50
+			elif r == 250 and g < 250:
+				r = 0;
+				g += 50
+			elif r == 250 and g == 250 and b < 250:
+				r = 0
+				g = 0
+				b += 50	
+		if event.key == pygame.K_LEFT:
+			if b > 0:
+				b -= 50
+			elif b == 0 and g > 0:
+				b = 250
+				g -= 50
+			elif b == 0 and g == 0 and r > 0:
+				b = 250
+				g = 250
+				r -= 50
+		color = (r,g,b)		
+
+		
 def chooseColor(mouse, click, choose):
 	###### COLOR BUTTONS
 	
@@ -168,7 +205,7 @@ def drawLine():
 	clickOne = (0,0)
 	clickTwo = (0,0)
 	
-	global color
+	global color, r, g, b, thickness 
 	
 	while True:
 		for event in pygame.event.get():
@@ -183,33 +220,12 @@ def drawLine():
 			###### COLOR BUTTONs
 			color = chooseColor(mouse, click, color)
 			######	
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_RIGHT:
-					if r < 250:
-						r += 50
-					elif r == 250 and g < 250:
-						r = 0;
-						g += 50
-					elif r == 250 and g == 250 and b < 250:
-						r = 0
-						g = 0
-						b += 50	
-				if event.key == pygame.K_LEFT:
-					if b > 0:
-						b -= 50
-					elif b == 0 and g > 0:
-						b = 250
-						g -= 50
-					elif b == 0 and g == 0 and r > 0:
-						b = 250
-						g = 250
-						r -= 50
-				color = (r,g,b)
+			sliders(event)
 			######	
 			button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
 			button("Erase All", 10, 550, 100, 30, red, bright_red, eraseAll)
 			button("DRAW", 10, 10, 100, 30, green, bright_green, freeDraw)
-			button("Spectrum", 360, 10, 100, 30, red, bright_red, spectrum)
+			button("Spectrum", 360, 10, 100, 30, (0,125,125), (0,225,225), spectrum)
 			
 			###### LINE DRAWING
 			if event.type == pygame.MOUSEBUTTONDOWN and one == False:
@@ -237,7 +253,8 @@ def freeDraw():
 	#add more functionality to colour
 	loop = True
 	
-	global color
+	global color, r, g, b, thickness
+	
 	
 	while loop:	
 		
@@ -255,40 +272,19 @@ def freeDraw():
 			color = chooseColor(mouse, click, color)
 			######
 			###### COLOR SLIDING USING ARROW KEYS
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_RIGHT:
-					if r < 250:
-						r += 50
-					elif r == 250 and g < 250:
-						r = 0;
-						g += 50
-					elif r == 250 and g == 250 and b < 250:
-						r = 0
-						g = 0
-						b += 50	
-				if event.key == pygame.K_LEFT:
-					if b > 0:
-						b -= 50
-					elif b == 0 and g > 0:
-						b = 250
-						g -= 50
-					elif b == 0 and g == 0 and r > 0:
-						b = 250
-						g = 250
-						r -= 50
-				color = (r,g,b)		
+			sliders(event)
 				
 			
 			#####DRAWING WITH MOUSE 
 			if click[0] == 1:
-				pygame.draw.rect(gameDisplay, color, (mouse[0], mouse[1], 3, 3))
+				pygame.draw.rect(gameDisplay, color, (mouse[0]-(thickness/2), mouse[1]-(thickness/2), thickness, thickness))
 			elif click[2] == 1:
 				pygame.draw.rect(gameDisplay, black, (mouse[0]-25, mouse[1]-25, 50, 50))
 			
 			button("QUIT", 120, 10, 100, 30, red, bright_red, quit_paint)
 			button("Erase All", 10, 550, 100, 30, red, bright_red, eraseAll)
 			button("line", 240, 10, 100, 30, blue, bright_blue, drawLine)
-			button("Spectrum", 360, 10, 100, 30, red, bright_red, spectrum)
+			button("Spectrum", 360, 10, 100, 30, (0,125,125), (0,225,225), spectrum)
 			pygame.display.update()
 			clock.tick(50000)
 				
